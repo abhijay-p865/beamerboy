@@ -1,0 +1,1001 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>BeamerBoy — Beaming stranded energy from anywhere to everywhere.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* =========================================================
+     BeamerBoy — minimalist deep-tech single page
+     - one sans family: Space Grotesk
+     - mono only for UI furniture (labels, citations)
+     - no gradients, no shadows, no decorative SVG
+     ========================================================= */
+
+  :root{
+    --bg: #0a0a0a;
+    --bg-elev: #0f0f0f;
+    --fg: #f4f4f4;
+    --fg-dim: #9a9a9a;
+    --fg-faint: #5a5a5a;
+    --rule: #1f1f1f;
+    --rule-strong: #2a2a2a;
+    --accent: #00E5FF;
+
+    --max: 1240px;
+    --gutter: clamp(20px, 4vw, 56px);
+
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  html, body{margin:0; padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:"Space Grotesk", system-ui, sans-serif;
+    font-weight:400;
+    font-size:17px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--accent); color:#000; }
+
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit;}
+
+  /* ---------- layout primitives ---------- */
+  .wrap{
+    max-width:var(--max);
+    margin:0 auto;
+    padding:0 var(--gutter);
+  }
+  .section{
+    padding: clamp(96px, 14vh, 180px) 0;
+    border-top:1px solid var(--rule);
+  }
+  .section--first{ border-top:none; padding-top: clamp(64px,10vh,120px); }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--fg-dim);
+    margin:0 0 28px 0;
+    display:flex; align-items:center; gap:14px;
+  }
+  .eyebrow::before{
+    content:""; display:inline-block;
+    width:24px; height:1px; background:var(--accent);
+  }
+  h1, h2, h3, h4{
+    font-weight:500;
+    letter-spacing:-0.02em;
+    margin:0;
+    text-wrap:balance;
+  }
+  h2.section-title{
+    font-size: clamp(40px, 6vw, 72px);
+    line-height:1.05;
+    margin-bottom: 56px;
+    font-weight:500;
+  }
+  h2.section-title .accent{ color:var(--accent); }
+
+  p{ margin:0; }
+  p + p{ margin-top: 1.1em; }
+
+  .lede{
+    font-size: clamp(20px, 1.8vw, 24px);
+    line-height:1.45;
+    color:var(--fg);
+    max-width:62ch;
+    font-weight:300;
+  }
+
+  .cite{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.04em;
+    color:var(--fg-faint);
+    line-height:1.7;
+  }
+  sup{
+    font-family:var(--mono);
+    font-size:0.6em;
+    color:var(--accent);
+    margin-left:1px;
+    top:-0.6em;
+    position:relative;
+  }
+
+  /* ---------- top nav ---------- */
+  .nav{
+    position:fixed; top:0; left:0; right:0;
+    z-index:50;
+    padding: 18px var(--gutter);
+    display:flex; align-items:center; justify-content:space-between;
+    background: rgba(10,10,10,0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom:1px solid transparent;
+    transition: border-color .3s, background .3s;
+  }
+  .nav.scrolled{ border-bottom-color:var(--rule); }
+  .nav__brand{
+    font-weight:600;
+    letter-spacing:-0.01em;
+    font-size:17px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .nav__brand .dot{
+    width:7px; height:7px; background:var(--accent);
+    border-radius:50%;
+    display:inline-block;
+  }
+  .nav__links{
+    display:flex; gap:32px;
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--fg-dim);
+  }
+  .nav__links a{ transition:color .2s; }
+  .nav__links a:hover{ color:var(--fg); }
+  @media (max-width: 720px){
+    .nav__links{ display:none; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex; flex-direction:column;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .hero__video-wrap{
+    position:absolute; inset:0;
+    background:#050505;
+    overflow:hidden;
+  }
+  /*
+    REPLACE THIS VIDEO:
+    Drop your file into the project (e.g. assets/hero.mp4) and update <source src="…">
+    Recommended: 1920x1080 H.264 .mp4, ~10–20s seamless loop, muted, 5–10MB.
+  -->*/
+  .hero__video{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    opacity:0.55;
+  }
+  .hero__placeholder{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    border:1px dashed var(--rule-strong);
+    margin: var(--gutter);
+    pointer-events:none;
+  }
+  .hero__placeholder span{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--fg-faint);
+    padding: 8px 14px;
+    border:1px solid var(--rule-strong);
+    background: var(--bg);
+  }
+  .hero__overlay{
+    position:absolute; inset:0;
+    background: rgba(10,10,10,0.72);
+  }
+  .hero__inner{
+    position:relative;
+    z-index:2;
+    padding: 120px var(--gutter) 80px;
+    max-width:var(--max);
+    margin:0 auto;
+    width:100%;
+  }
+  .hero__meta{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--fg-dim);
+    display:flex; gap:18px; align-items:center;
+    margin-bottom: 40px;
+  }
+  .hero__meta .pulse{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--accent);
+    box-shadow: 0 0 0 0 rgba(0,229,255,0.7);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow: 0 0 0 0 rgba(0,229,255,0.5); }
+    70%{ box-shadow: 0 0 0 10px rgba(0,229,255,0); }
+    100%{ box-shadow: 0 0 0 0 rgba(0,229,255,0); }
+  }
+  .hero__logo{
+    font-size: clamp(64px, 11vw, 168px);
+    font-weight:600;
+    line-height:0.92;
+    letter-spacing:-0.045em;
+    margin: 0 0 28px;
+  }
+  .hero__logo .b{ color:var(--accent); }
+  .hero__tag{
+    font-size: clamp(20px, 2.2vw, 30px);
+    font-weight:300;
+    line-height:1.3;
+    color:var(--fg);
+    max-width: 28ch;
+    margin: 0 0 56px;
+    letter-spacing:-0.01em;
+  }
+  .cta{
+    display:inline-flex;
+    align-items:center;
+    gap:14px;
+    padding: 18px 28px;
+    border:1px solid var(--fg);
+    color:var(--fg);
+    background:transparent;
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition: background .2s, color .2s, border-color .2s;
+  }
+  .cta:hover{
+    background:var(--accent);
+    color:#000;
+    border-color:var(--accent);
+  }
+  .cta__arrow{ display:inline-block; transform: translateY(0); transition: transform .2s; }
+  .cta:hover .cta__arrow{ transform: translateY(2px); }
+
+  .hero__corner{
+    position:absolute;
+    bottom: var(--gutter);
+    right: var(--gutter);
+    z-index:3;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--fg-dim);
+    text-align:right;
+    line-height:1.7;
+  }
+  .hero__corner-bl{
+    position:absolute;
+    bottom: var(--gutter);
+    left: var(--gutter);
+    z-index:3;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--fg-dim);
+  }
+  @media (max-width: 720px){
+    .hero__corner, .hero__corner-bl{ display:none; }
+  }
+
+  /* ---------- placeholder image box ---------- */
+  .ph{
+    border:1px dashed var(--rule-strong);
+    background: var(--bg-elev);
+    display:flex; align-items:center; justify-content:center;
+    min-height:280px;
+    padding: 40px 24px;
+    position:relative;
+  }
+  .ph__label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--fg-dim);
+    text-align:center;
+    line-height:1.7;
+    max-width: 30ch;
+  }
+  .ph__label::before{
+    content:"[ "; color:var(--fg-faint);
+  }
+  .ph__label::after{
+    content:" ]"; color:var(--fg-faint);
+  }
+  .ph__corner{
+    position:absolute; top:10px; left:12px;
+    font-family:var(--mono);
+    font-size:10px; letter-spacing:0.16em;
+    color:var(--fg-faint);
+    text-transform:uppercase;
+  }
+
+  /* ---------- problem section ---------- */
+  .problem-grid{
+    display:grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items:start;
+  }
+  @media (max-width: 900px){
+    .problem-grid{ grid-template-columns:1fr; }
+  }
+  .problem-grid .ph{ min-height:380px; }
+
+  /* ---------- solution cards ---------- */
+  .cards{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border:1px solid var(--rule);
+  }
+  @media (max-width: 900px){
+    .cards{ grid-template-columns:1fr; }
+  }
+  .card{
+    background:var(--bg);
+    padding: 36px 36px 40px;
+    display:flex; flex-direction:column;
+    gap:24px;
+  }
+  .card__num{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:var(--accent);
+    display:flex; align-items:center; gap:12px;
+  }
+  .card__num span{ color:var(--fg-dim); }
+  .card .ph{ min-height:200px; margin-bottom:8px; }
+  .card h3{
+    font-size:24px;
+    font-weight:500;
+    line-height:1.2;
+    margin: 4px 0 4px;
+  }
+  .card p{
+    font-size:15px;
+    line-height:1.6;
+    color:var(--fg-dim);
+  }
+
+  /* ---------- impact stats ---------- */
+  .impact-intro{
+    font-size: clamp(22px, 2.4vw, 32px);
+    line-height:1.3;
+    font-weight:300;
+    max-width: 26ch;
+    letter-spacing:-0.015em;
+    margin-bottom: 80px;
+  }
+  .stats{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+  }
+  @media (max-width: 900px){
+    .stats{ grid-template-columns:1fr; }
+  }
+  .stat{
+    padding: 48px 32px;
+    border-right:1px solid var(--rule);
+  }
+  .stat:last-child{ border-right:none; }
+  @media (max-width: 900px){
+    .stat{ border-right:none; border-bottom:1px solid var(--rule); }
+    .stat:last-child{ border-bottom:none; }
+  }
+  .stat__num{
+    font-size: clamp(54px, 6.5vw, 88px);
+    font-weight:500;
+    letter-spacing:-0.04em;
+    line-height:1;
+    margin-bottom:18px;
+  }
+  .stat__num .unit{
+    color:var(--accent);
+    font-size:0.45em;
+    margin-left:6px;
+    letter-spacing:0;
+    font-weight:400;
+  }
+  .stat__label{
+    color:var(--fg-dim);
+    font-size:15px;
+    line-height:1.5;
+    max-width:30ch;
+  }
+  .impact-foot{
+    margin-top: 80px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items:start;
+  }
+  @media (max-width: 900px){ .impact-foot{ grid-template-columns:1fr; } }
+  .impact-foot p{
+    font-size: 18px;
+    line-height:1.55;
+    color:var(--fg);
+    max-width:54ch;
+  }
+  .impact-foot .ph{ min-height: 320px; }
+
+  /* ---------- validation ---------- */
+  .validation-row{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border:1px solid var(--rule);
+  }
+  @media (max-width: 900px){
+    .validation-row{ grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 520px){
+    .validation-row{ grid-template-columns: 1fr; }
+  }
+  .v-card{
+    background:var(--bg);
+    padding: 32px 28px;
+    display:flex; flex-direction:column; gap:20px;
+    min-height: 240px;
+  }
+  .v-card__logo{
+    border:1px dashed var(--rule-strong);
+    background: var(--bg-elev);
+    height: 64px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--fg-dim);
+  }
+  .v-card__year{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.18em;
+    color:var(--accent);
+  }
+  .v-card__desc{
+    font-size:14px;
+    line-height:1.5;
+    color:var(--fg-dim);
+    margin-top:auto;
+  }
+  .validation-foot{
+    margin-top: 56px;
+    font-size: clamp(18px, 1.8vw, 22px);
+    line-height:1.5;
+    max-width: 70ch;
+    font-weight:300;
+    color:var(--fg);
+  }
+  .validation-foot strong{
+    color:var(--accent);
+    font-weight:400;
+  }
+
+  /* ---------- roadmap ---------- */
+  .roadmap{
+    position:relative;
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .roadmap::before{
+    content:"";
+    position:absolute;
+    top: 28px; left:0; right:0;
+    height:1px;
+    background: var(--rule-strong);
+  }
+  @media (max-width: 900px){
+    .roadmap{ grid-template-columns: 1fr; }
+    .roadmap::before{ top:0; bottom:0; left:28px; width:1px; height:auto; right:auto; }
+  }
+  .phase{
+    padding: 0 24px 0 0;
+    position:relative;
+    padding-top: 64px;
+  }
+  @media (max-width: 900px){
+    .phase{ padding: 0 0 56px 56px; }
+  }
+  .phase::before{
+    content:"";
+    position:absolute;
+    top: 22px; left: 0;
+    width:13px; height:13px;
+    background: var(--bg);
+    border:1px solid var(--accent);
+    border-radius:50%;
+  }
+  .phase.active::before{
+    background: var(--accent);
+  }
+  @media (max-width: 900px){
+    .phase::before{ top:0; left: 22px; }
+  }
+  .phase__num{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom: 8px;
+  }
+  .phase__num .when{ color:var(--fg-dim); margin-left:8px; }
+  .phase__title{
+    font-size: 20px;
+    font-weight:500;
+    line-height:1.25;
+    margin-bottom: 16px;
+    max-width: 22ch;
+    letter-spacing:-0.01em;
+  }
+  .phase__body{
+    font-size: 14px;
+    line-height:1.55;
+    color:var(--fg-dim);
+    max-width:30ch;
+  }
+
+  /* ---------- about ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+  }
+  @media (max-width: 900px){ .about-grid{ grid-template-columns:1fr; } }
+  .about-grid p{
+    font-size: 18px;
+    line-height:1.6;
+    color: var(--fg);
+    font-weight:300;
+    max-width:52ch;
+  }
+
+  /* ---------- team ---------- */
+  .team{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+  @media (max-width: 900px){
+    .team{ grid-template-columns: repeat(2, 1fr); gap:40px 32px; }
+  }
+  .member{
+    display:flex; flex-direction:column; gap:20px;
+  }
+  .member__photo{
+    aspect-ratio:1/1;
+    border-radius:50%;
+    border:1px dashed var(--rule-strong);
+    background: var(--bg-elev);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--fg-faint);
+    width: 70%;
+    max-width: 200px;
+  }
+  .member__name{
+    font-size: 22px;
+    font-weight:500;
+    letter-spacing:-0.01em;
+  }
+  .member__role{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--accent);
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    border-top:1px solid var(--rule);
+    padding: 56px 0 48px;
+    margin-top: 80px;
+  }
+  .footer-top{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    gap: 32px;
+    flex-wrap:wrap;
+    margin-bottom: 56px;
+  }
+  .footer-mark{
+    font-size: 22px;
+    font-weight:600;
+    letter-spacing:-0.02em;
+  }
+  .footer-mark .b{ color:var(--accent); }
+  .footer-emails{
+    font-family: var(--mono);
+    font-size:12px;
+    color:var(--fg-dim);
+    letter-spacing:0.04em;
+    line-height:2;
+  }
+  .footer-emails a{ transition:color .2s; }
+  .footer-emails a:hover{ color:var(--accent); }
+  .footer-emails .sep{ color:var(--fg-faint); margin: 0 10px; }
+  .footer-rule{ height:1px; background:var(--rule); margin: 32px 0; }
+  .footer-bottom{
+    display:flex; justify-content:space-between;
+    gap: 32px;
+    flex-wrap:wrap;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--fg-faint);
+    letter-spacing:0.06em;
+    line-height:1.9;
+  }
+  .footer-cites{ max-width: 70%; }
+  @media (max-width: 720px){
+    .footer-cites{ max-width:100%; }
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform: translateY(16px);
+    transition: opacity .8s ease, transform .8s ease;
+  }
+  .reveal.in{ opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav" id="nav">
+  <a href="#top" class="nav__brand"><span class="dot"></span>BeamerBoy</a>
+  <div class="nav__links">
+    <a href="#problem">Problem</a>
+    <a href="#solution">Solution</a>
+    <a href="#impact">Impact</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#team">Team</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero" id="top" data-screen-label="01 Hero">
+  <div class="hero__video-wrap">
+    <!--
+      ============================================================
+        VIDEO BACKGROUND
+        Replace the <source> below with your file.
+        Suggested: ./assets/hero.mp4 — H.264, 1920x1080, muted loop.
+      ============================================================
+    -->
+    <video class="hero__video" autoplay muted loop playsinline poster="">
+      <source src="" type="video/mp4" />
+    </video>
+    <div class="hero__placeholder">
+      <span>Video Background — upload your video here</span>
+    </div>
+    <div class="hero__overlay"></div>
+  </div>
+
+  <div class="hero__inner">
+    <div class="hero__meta">
+      <span class="pulse" style="background-color: rgb(0, 0, 0)"></span>
+      <span>
+</span>
+      <span style="color:var(--fg-faint)">
+</span>
+      <span>
+</span>
+    </div>
+
+    <h1 class="hero__logo">Beamer<span class="b">Boy</span></h1>
+
+    <p class="hero__tag">Beaming stranded energy from anywhere to everywhere.</p>
+
+    <a href="#problem" class="cta">
+      <span>Learn More</span>
+      <span class="cta__arrow">↓</span>
+    </a>
+  </div>
+
+  <div class="hero__corner-bl">
+    Phase 0 / Calibration Demo<br/>
+    Status: Active
+  </div>
+  <div class="hero__corner">
+    N 38°53′ · W 77°02′<br/>
+    Pilot signal locked
+  </div>
+</header>
+
+<!-- ===== PROBLEM ===== -->
+<section class="section" id="problem" data-screen-label="02 Problem">
+  <div class="wrap">
+    <p class="eyebrow">01 — The Problem</p>
+    <h2 class="section-title">Clean energy is being<br/>wasted at <span class="accent">record scale.</span></h2>
+
+    <div class="problem-grid">
+      <div>
+        <p class="lede">In 2024, over 50&nbsp;TWh of renewable energy was curtailed globally — equivalent to Norway's entire annual electricity consumption.<sup>1</sup></p>
+        <p class="lede" style="margin-top:1.2em;">New energy projects wait an average of 55 months to connect to the grid, and 87% of queued capacity never makes it through.<sup>2</sup></p>
+        <p class="lede" style="margin-top:1.6em; color:var(--accent);">The bottleneck isn't generation — it's delivery.</p>
+
+        <div class="cite" style="margin-top:48px;">
+          <sup>1</sup> IEA via SolarTechOnline, 2025.<br/>
+          <sup>2</sup> Lawrence Berkeley National Laboratory, Queued Up 2025 Edition.
+        </div>
+      </div>
+
+      <div class="ph">
+        <span class="ph__corner">FIG. 01</span>
+        <span class="ph__label">Insert graphic — global renewable curtailment chart, 2018–2024</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SOLUTION ===== -->
+<section class="section" id="solution" data-screen-label="03 Solution">
+  <div class="wrap">
+    <p class="eyebrow">02 — The Solution</p>
+    <h2 class="section-title">A wireless delivery layer<br/>for <span class="accent">stranded energy.</span></h2>
+
+    <div class="cards">
+      <div class="card">
+        <div class="ph">
+          <span class="ph__corner">FIG. 02A</span>
+          <span class="ph__label">Insert diagram — transmitter to receiver beam path</span>
+        </div>
+        <div class="card__num">A <span>/ How it works</span></div>
+        <h3>A focused microwave beam, point&#8209;to&#8209;point.</h3>
+        <p>A flat phased-array transmitter converts renewable electricity into a focused 2.45&nbsp;GHz microwave beam. A rectenna at the destination converts it back to usable electricity at 80–85% efficiency<sup>3</sup> — no wires, no grid connection required.</p>
+      </div>
+
+      <div class="card">
+        <div class="ph">
+          <span class="ph__corner">FIG. 02B</span>
+          <span class="ph__label">Insert graphic — phased array element drift visualization</span>
+        </div>
+        <div class="card__num">B <span>/ The hard problem</span></div>
+        <h3>Phased arrays drift.</h3>
+        <p>Heat, aging, and weather cause each element's timing to shift, scattering the beam and destroying efficiency. Today's fix is to take the system offline for days of manual recalibration.</p>
+      </div>
+
+      <div class="card">
+        <div class="ph">
+          <span class="ph__corner">FIG. 02C</span>
+          <span class="ph__label">Insert graphic — AI calibration loop on pilot signal</span>
+        </div>
+        <div class="card__num">C <span>/ BeamerBoy's IP</span></div>
+        <h3>Continuous AI self&#8209;calibration.</h3>
+        <p>Our AI self-calibration system reads the pilot signal the receiver already sends, detects drift at each element in real-time, and corrects continuously — while the system is actively transmitting. No downtime. No lab. No degradation.</p>
+      </div>
+    </div>
+
+    <div class="cite" style="margin-top:32px;">
+      <sup>3</sup> JPL/Raytheon demonstration, 1975; replicated in multiple subsequent experiments.
+    </div>
+  </div>
+</section>
+
+<!-- ===== IMPACT ===== -->
+<section class="section" id="impact" data-screen-label="04 Impact">
+  <div class="wrap">
+    <p class="eyebrow">03 — Impact</p>
+    <h2 class="section-title">Where the grid<br/>can't reach <span class="accent">fast enough.</span></h2>
+
+    <p class="impact-intro">BeamerBoy doesn't replace the grid. It serves the people the grid can't reach fast enough.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat__num">50<span class="unit">+ TWh</span></div>
+        <div class="stat__label">Clean energy wasted globally in 2024 alone.<sup>1</sup></div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">55<span class="unit">months</span></div>
+        <div class="stat__label">Average wait to connect a new energy project to the US grid.<sup>2</sup></div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">87<span class="unit">%</span></div>
+        <div class="stat__label">Share of queued grid capacity that never reaches commercial operation.<sup>2</sup></div>
+      </div>
+    </div>
+
+    <div class="impact-foot">
+      <p>Our near-term target customers are not utilities — they are island grids paying $0.42/kWh<sup>4</sup>, military forward bases running on diesel, and data centers waiting years for grid connection. We don't need to beat grid pricing. <span style="color:var(--accent)">We need to exist where the grid doesn't.</span></p>
+      <div class="ph" style="min-height:300px;">
+        <span class="ph__corner">FIG. 03</span>
+        <span class="ph__label">Insert graphic — global map of target sites: islands, forward bases, data centers</span>
+      </div>
+    </div>
+
+    <div class="cite" style="margin-top:32px;">
+      <sup>4</sup> US DOE EIA State Electricity Profiles, Hawaii, 2024.
+    </div>
+  </div>
+</section>
+
+<!-- ===== VALIDATION ===== -->
+<section class="section" id="validation" data-screen-label="05 Validation">
+  <div class="wrap">
+    <p class="eyebrow">04 — Validation</p>
+    <h2 class="section-title">Standing on the<br/>shoulders of <span class="accent">giants.</span></h2>
+
+    <div class="validation-row">
+      <div class="v-card">
+        <div class="v-card__logo">Caltech</div>
+        <div class="v-card__year">2023</div>
+        <div class="v-card__desc">First wireless power transmission in space.</div>
+      </div>
+      <div class="v-card">
+        <div class="v-card__logo">DARPA</div>
+        <div class="v-card__year">2025</div>
+        <div class="v-card__desc">800&nbsp;W beamed 8.6&nbsp;km — distance record.</div>
+      </div>
+      <div class="v-card">
+        <div class="v-card__logo">Overview Energy</div>
+        <div class="v-card__year">2025</div>
+        <div class="v-card__desc">Power beamed from aircraft at 5,000&nbsp;m altitude.</div>
+      </div>
+      <div class="v-card">
+        <div class="v-card__logo">PowerLight Technologies</div>
+        <div class="v-card__year">2026</div>
+        <div class="v-card__desc">First wireless power to a military drone in flight.</div>
+      </div>
+    </div>
+
+    <p class="validation-foot">DARPA's own Phase 2 roadmap identifies <strong>continuous field calibration</strong> as the next unsolved problem. That is what BeamerBoy is built to solve.</p>
+  </div>
+</section>
+
+<!-- ===== ROADMAP ===== -->
+<section class="section" id="roadmap" data-screen-label="06 Roadmap">
+  <div class="wrap">
+    <p class="eyebrow">05 — The Plan</p>
+    <h2 class="section-title">From benchtop<br/>to <span class="accent">first pilot.</span></h2>
+
+    <div class="roadmap">
+      <div class="phase active">
+        <div class="phase__num">Phase 0 <span class="when">/ Now</span></div>
+        <div class="phase__title">AI self-calibration proof-of-concept.</div>
+        <p class="phase__body">4–8 element array, off-the-shelf SDR hardware. Under $3,500.</p>
+      </div>
+      <div class="phase">
+        <div class="phase__num">Phase 1 <span class="when">/ Year 1</span></div>
+        <div class="phase__title">NSF SBIR Phase&nbsp;I grant ($305K).</div>
+        <p class="phase__body">16-element prototype, real power transfer with AI calibration active.</p>
+      </div>
+      <div class="phase">
+        <div class="phase__num">Phase 2 <span class="when">/ Yrs 2–3</span></div>
+        <div class="phase__title">Kilowatt-class system, government validation.</div>
+        <p class="phase__body">$1–2M from NSF Phase II + DoD/DOE grants. IP filed.</p>
+      </div>
+      <div class="phase">
+        <div class="phase__num">Phase 3 <span class="when">/ Yrs 3–5</span></div>
+        <div class="phase__title">Series A. First commercial pilot.</div>
+        <p class="phase__body">Island grid or remote industrial site deployment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section class="section" id="about" data-screen-label="07 About">
+  <div class="wrap">
+    <p class="eyebrow">06 — About Us</p>
+    <h2 class="section-title">A delivery problem,<br/>not a generation problem.</h2>
+
+    <div class="about-grid">
+      <p>BeamerBoy was founded on a simple observation: the world's clean energy problem is not a generation problem — it is a delivery problem. Billions of dollars of renewable infrastructure sits stranded because the grid can't move energy fast enough. We're building the wireless delivery layer that fixes this.</p>
+      <p>We are a student team working at the intersection of RF engineering, machine learning, and energy systems. We believe the most important infrastructure companies of the next decade will not build wires — they will make wires unnecessary.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TEAM ===== -->
+<section class="section" id="team" data-screen-label="08 Team">
+  <div class="wrap">
+    <p class="eyebrow">07 — The Team</p>
+    <h2 class="section-title">The <span class="accent">team.</span></h2>
+
+    <div class="team">
+      <div class="member">
+        <div class="member__photo">Photo</div>
+        <div class="member__name">Isabella Butera</div>
+        <div class="member__role">Co-Founder</div>
+      </div>
+      <div class="member">
+        <div class="member__photo">Photo</div>
+        <div class="member__name">Emily Ma</div>
+        <div class="member__role">Co-Founder</div>
+      </div>
+      <div class="member">
+        <div class="member__photo">Photo</div>
+        <div class="member__name">Abhijay Prabhu</div>
+        <div class="member__role">Co-Founder</div>
+      </div>
+      <div class="member">
+        <div class="member__photo">Photo</div>
+        <div class="member__name">Siruni Pulijala</div>
+        <div class="member__role">Co-Founder</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-mark">Beamer<span class="b">Boy</span></div>
+      <div class="footer-emails">
+        <a href="/cdn-cgi/l/email-protection#2d445757544f5859485f4c1c1c6d4a404c4441034e4240"></a><span class="sep"></span><a href="/cdn-cgi/l/email-protection#fc9991959085919dbc93898890939397d29f9391"></a><span class="sep">·</span><a href="/cdn-cgi/l/email-protection#e0818288898a8199909281828895a0878d81898cce838f8d"></a><span class="sep"></span><a href="/cdn-cgi/l/email-protection#cab9a3b8bfe4babfa6a3a0aba6ab8aada7aba3a6e4a9a5a7"></a>
+      </div>
+    </div>
+
+    <div class="footer-rule"></div>
+
+    <div class="footer-bottom">
+      <div class="footer-cites">
+        <sup>1</sup> IEA via SolarTechOnline, 2025. &nbsp;
+        <sup>2</sup> Lawrence Berkeley National Laboratory, Queued Up 2025 Edition. &nbsp;
+        <sup>3</sup> JPL/Raytheon demonstration, 1975. &nbsp;
+        <sup>4</sup> US DOE EIA State Electricity Profiles, Hawaii, 2024.
+      </div>
+      <div>© 2026 BeamerBoy. All rights reserved.</div>
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // nav scroll state
+  const nav = document.getElementById('nav');
+  const onScroll = () => {
+    nav.classList.toggle('scrolled', window.scrollY > 24);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.section, .hero__inner').forEach(el => {
+    el.classList.add('reveal');
+    io.observe(el);
+  });
+</script>
+
+</body>
+</html>
