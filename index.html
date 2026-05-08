@@ -695,7 +695,7 @@
       ============================================================
     -->
     <video class="hero__video" autoplay muted loop playsinline poster="">
-      <source src="" type="video/mp4" />
+      <source src="https://res.cloudinary.com/dsvqu9qa5/video/upload/v1778199081/BeamerBoy_Sizzle_Video_ea2uzo.mp4" type="video/mp4" />
     </video>
     <div class="hero__placeholder">
       <span>Video Background — upload your video here</span>
@@ -705,13 +705,10 @@
 
   <div class="hero__inner">
     <div class="hero__meta">
-      <span class="pulse" style="background-color: rgb(0, 0, 0)"></span>
-      <span>
-</span>
-      <span style="color:var(--fg-faint)">
-</span>
-      <span>
-</span>
+      <span class="pulse"></span>
+      <span>Wireless Energy Transmission</span>
+      <span style="color:var(--fg-faint)">·</span>
+      <span>Phase 0 Active</span>
     </div>
 
     <h1 class="hero__logo">Beamer<span class="b">Boy</span></h1>
@@ -752,9 +749,13 @@
         </div>
       </div>
 
-      <div class="ph">
-        <span class="ph__corner">FIG. 01</span>
-        <span class="ph__label">Insert graphic — global renewable curtailment chart, 2018–2024</span>
+      <div style="position:relative;">
+        <img src="https://www.iea.org/cms_assets/images/Annual-VRE-shares-in-generation-and-technical-curtailment-for-selected-countries-and-regions.png" alt="Annual VRE shares and technical curtailment by country, IEA 2025" style="width:100%; display:block; border:1px solid var(--rule-strong);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <div class="ph" style="display:none;">
+          <span class="ph__corner">FIG. 01</span>
+          <span class="ph__label">Insert graphic — global renewable curtailment chart (iea.org/data-and-statistics/charts/annual-vre-shares-in-generation-and-technical-curtailment-for-selected-countries-and-regions)</span>
+        </div>
+        <div class="cite" style="margin-top:8px;">Source: IEA, Renewables 2025, CC BY 4.0</div>
       </div>
     </div>
   </div>
@@ -768,29 +769,63 @@
 
     <div class="cards">
       <div class="card">
-        <div class="ph">
-          <span class="ph__corner">FIG. 02A</span>
-          <span class="ph__label">Insert diagram — transmitter to receiver beam path</span>
-        </div>
+        <img src="laser.jpg" alt="Transmitter to receiver beam path" style="width:100%; display:block;">
         <div class="card__num">A <span>/ How it works</span></div>
         <h3>A focused microwave beam, point&#8209;to&#8209;point.</h3>
         <p>A flat phased-array transmitter converts renewable electricity into a focused 2.45&nbsp;GHz microwave beam. A rectenna at the destination converts it back to usable electricity at 80–85% efficiency<sup>3</sup> — no wires, no grid connection required.</p>
       </div>
 
       <div class="card">
-        <div class="ph">
-          <span class="ph__corner">FIG. 02B</span>
-          <span class="ph__label">Insert graphic — phased array element drift visualization</span>
-        </div>
+        <img src="phased array.png" alt="Phased array element diagram" style="width:100%; display:block;">
         <div class="card__num">B <span>/ The hard problem</span></div>
         <h3>Phased arrays drift.</h3>
         <p>Heat, aging, and weather cause each element's timing to shift, scattering the beam and destroying efficiency. Today's fix is to take the system offline for days of manual recalibration.</p>
       </div>
 
       <div class="card">
-        <div class="ph">
-          <span class="ph__corner">FIG. 02C</span>
-          <span class="ph__label">Insert graphic — AI calibration loop on pilot signal</span>
+        <div style="background:var(--bg-elev); border:1px solid var(--rule-strong); padding:24px;">
+          <svg width="100%" viewBox="0 0 680 520" role="img" xmlns="http://www.w3.org/2000/svg">
+            <title>BeamerBoy AI self-calibration loop</title>
+            <desc>Symmetric diagram showing the AI self-calibration feedback loop: phased array transmitter top-left, rectenna receiver top-right, AI calibration engine center, with power beam, pilot signal, and correction vector paths.</desc>
+            <defs>
+              <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
+            <!-- Node: Phased array -->
+            <rect x="40" y="40" width="220" height="64" rx="8" fill="#0a2a2a" stroke="#00E5FF" stroke-width="0.5"/>
+            <text x="150" y="65" text-anchor="middle" dominant-baseline="central" font-family="Space Grotesk, sans-serif" font-size="14" font-weight="500" fill="#9FE1CB">Phased array</text>
+            <text x="150" y="85" text-anchor="middle" dominant-baseline="central" font-family="Space Grotesk, sans-serif" font-size="12" fill="#5DCAA5">Hundreds of elements, 2.45 GHz</text>
+            <!-- Node: Rectenna -->
+            <rect x="420" y="40" width="220" height="64" rx="8" fill="#0a1a2a" stroke="#00E5FF" stroke-width="0.5"/>
+            <text x="530" y="65" text-anchor="middle" dominant-baseline="central" font-family="Space Grotesk, sans-serif" font-size="14" font-weight="500" fill="#85B7EB">Rectenna receiver</text>
+            <text x="530" y="85" text-anchor="middle" dominant-baseline="central" font-family="Space Grotesk, sans-serif" font-size="12" fill="#378ADD">80–85% RF-to-DC efficiency</text>
+            <!-- Power beam arrow -->
+            <path d="M260 65 L420 65" fill="none" stroke="#9a9a9a" stroke-width="1.5" marker-end="url(#arr2)"/>
+            <rect x="298" y="48" width="84" height="18" rx="4" fill="#0f0f0f"/>
+            <text x="340" y="57" text-anchor="middle" dominant-baseline="central" font-family="Space Grotesk, sans-serif" font-size="11" fill="#9a9a9a">power beam</text>
+            <!-- AI engine center -->
+            <rect x="190" y="230" width="300" height="80" rx="8" fill="#150a2a" stroke="#00E5FF" stroke-width="0.5"/>
+            <text x="340" y="258" text-anchor="middle" dominant-baseline="central" font-family="Space Grotesk, sans-serif" font-size="14" font-weight="500" fill="#CCC0F6">AI calibration engine</text>
+            <text x="340" y="278" text-anchor="middle" dominant-baseline="central" font-family="Space Grotesk, sans-serif" font-size="12" fill="#AFA9EC">Reads pilot · detects drift · computes corrections</text>
+            <text x="340" y="296" text-anchor="middle" dominant-baseline="central" font-family="Space Grotesk, sans-serif" font-size="12" fill="#AFA9EC">Updates every few milliseconds</text>
+            <!-- Pilot signal: rectenna → AI -->
+            <path d="M530 104 L530 270 L490 270" fill="none" stroke="#9a9a9a" stroke-width="1" marker-end="url(#arr2)"/>
+            <rect x="548" y="172" width="80" height="18" rx="4" fill="#0f0f0f"/>
+            <text x="588" y="181" text-anchor="middle" dominant-baseline="central" font-family="Space Grotesk, sans-serif" font-size="11" fill="#9a9a9a">pilot signal</text>
+            <!-- Correction vector: AI → array -->
+            <path d="M190 270 L150 270 L150 104" fill="none" stroke="#9a9a9a" stroke-width="1" marker-end="url(#arr2)"/>
+            <rect x="52" y="172" width="96" height="18" rx="4" fill="#0f0f0f"/>
+            <text x="100" y="181" text-anchor="middle" dominant-baseline="central" font-family="Space Grotesk, sans-serif" font-size="11" fill="#9a9a9a">correction vector</text>
+            <!-- Connector to safety note -->
+            <line x1="340" y1="310" x2="340" y2="390" stroke="#5a5a5a" stroke-width="0.5" stroke-dasharray="4 4"/>
+            <!-- Safety note -->
+            <rect x="160" y="390" width="360" height="60" rx="8" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="0.5"/>
+            <text x="340" y="414" text-anchor="middle" dominant-baseline="central" font-family="Space Grotesk, sans-serif" font-size="14" font-weight="500" fill="#f4f4f4">Safety: retrodirective design</text>
+            <text x="340" y="434" text-anchor="middle" dominant-baseline="central" font-family="Space Grotesk, sans-serif" font-size="12" fill="#9a9a9a">Pilot signal lost → beam defocuses in milliseconds</text>
+            <!-- Subtitle -->
+            <text x="340" y="490" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="11" fill="#5a5a5a">self-calibrates continuously — no downtime, no lab, no degradation</text>
+          </svg>
         </div>
         <div class="card__num">C <span>/ BeamerBoy's IP</span></div>
         <h3>Continuous AI self&#8209;calibration.</h3>
@@ -829,10 +864,7 @@
 
     <div class="impact-foot">
       <p>Our near-term target customers are not utilities — they are island grids paying $0.42/kWh<sup>4</sup>, military forward bases running on diesel, and data centers waiting years for grid connection. We don't need to beat grid pricing. <span style="color:var(--accent)">We need to exist where the grid doesn't.</span></p>
-      <div class="ph" style="min-height:300px;">
-        <span class="ph__corner">FIG. 03</span>
-        <span class="ph__label">Insert graphic — global map of target sites: islands, forward bases, data centers</span>
-      </div>
+      <img src="target-map.png" alt="Global map of target deployment sites" style="width:100%; display:block;">
     </div>
 
     <div class="cite" style="margin-top:32px;">
@@ -840,40 +872,6 @@
     </div>
   </div>
 </section>
-
-<!-- ===== VALIDATION ===== -->
-<section class="section" id="validation" data-screen-label="05 Validation">
-  <div class="wrap">
-    <p class="eyebrow">04 — Validation</p>
-    <h2 class="section-title">Standing on the<br/>shoulders of <span class="accent">giants.</span></h2>
-
-    <div class="validation-row">
-      <div class="v-card">
-        <div class="v-card__logo">Caltech</div>
-        <div class="v-card__year">2023</div>
-        <div class="v-card__desc">First wireless power transmission in space.</div>
-      </div>
-      <div class="v-card">
-        <div class="v-card__logo">DARPA</div>
-        <div class="v-card__year">2025</div>
-        <div class="v-card__desc">800&nbsp;W beamed 8.6&nbsp;km — distance record.</div>
-      </div>
-      <div class="v-card">
-        <div class="v-card__logo">Overview Energy</div>
-        <div class="v-card__year">2025</div>
-        <div class="v-card__desc">Power beamed from aircraft at 5,000&nbsp;m altitude.</div>
-      </div>
-      <div class="v-card">
-        <div class="v-card__logo">PowerLight Technologies</div>
-        <div class="v-card__year">2026</div>
-        <div class="v-card__desc">First wireless power to a military drone in flight.</div>
-      </div>
-    </div>
-
-    <p class="validation-foot">DARPA's own Phase 2 roadmap identifies <strong>continuous field calibration</strong> as the next unsolved problem. That is what BeamerBoy is built to solve.</p>
-  </div>
-</section>
-
 <!-- ===== ROADMAP ===== -->
 <section class="section" id="roadmap" data-screen-label="06 Roadmap">
   <div class="wrap">
@@ -926,22 +924,26 @@
 
     <div class="team">
       <div class="member">
-        <div class="member__photo">Photo</div>
+        <!-- PHOTO: replace the div below with <img src="isabella.jpg" alt="Isabella Butera" style="width:70%;max-width:200px;border-radius:50%;aspect-ratio:1/1;object-fit:cover;"> -->
+        <img src="isabella.jpg" alt="Isabella Butera" style="width:70%;max-width:200px;border-radius:50%;aspect-ratio:1/1;object-fit:cover;">
         <div class="member__name">Isabella Butera</div>
         <div class="member__role">Co-Founder</div>
       </div>
       <div class="member">
-        <div class="member__photo">Photo</div>
+        <!-- PHOTO: replace the div below with <img src="emily.jpg" alt="Emily Ma" style="width:70%;max-width:200px;border-radius:50%;aspect-ratio:1/1;object-fit:cover;"> -->
+        <img src="emily.jpg" alt="Emily Ma" style="width:70%;max-width:200px;border-radius:50%;aspect-ratio:1/1;object-fit:cover;">
         <div class="member__name">Emily Ma</div>
         <div class="member__role">Co-Founder</div>
       </div>
       <div class="member">
-        <div class="member__photo">Photo</div>
+        <!-- PHOTO: replace the div below with <img src="abhijay.jpg" alt="Abhijay Prabhu" style="width:70%;max-width:200px;border-radius:50%;aspect-ratio:1/1;object-fit:cover;"> -->
+        <img src="abhijay.png" alt="Abhijay Prabhu" style="width:70%;max-width:200px;border-radius:50%;aspect-ratio:1/1;object-fit:cover;">
         <div class="member__name">Abhijay Prabhu</div>
         <div class="member__role">Co-Founder</div>
       </div>
       <div class="member">
-        <div class="member__photo">Photo</div>
+        <!-- PHOTO: replace the div below with <img src="siruni.jpg" alt="Siruni Pulijala" style="width:70%;max-width:200px;border-radius:50%;aspect-ratio:1/1;object-fit:cover;"> -->
+        <img src="siruni.jpg" alt="Siruni Pulijala" style="width:70%;max-width:200px;border-radius:50%;aspect-ratio:1/1;object-fit:cover;">
         <div class="member__name">Siruni Pulijala</div>
         <div class="member__role">Co-Founder</div>
       </div>
